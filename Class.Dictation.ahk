@@ -1,7 +1,7 @@
 ﻿Class Dictation {
 
 	; ==========================================
-	static ID := "mmbjeckbbhhmehnahdleehfgjdmgchdi"
+	static ID := "" ; <<<< put here the ID of the extension
 	; ==========================================
 
 		, url := "https://dictation.io"
