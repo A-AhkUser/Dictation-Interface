@@ -4,7 +4,9 @@
 	static ID := "" ; <<<< put here the ID of the extension
 	; ==========================================
 
-		, url := "https://dictation.io"
+		, url := "https://dictation.io/speech"
+		, iteratorPeriod := 400
+		, hideChromeInstance := false
 
 		recognitionLanguage := ""
 		, recognizing := false
@@ -22,82 +24,131 @@
 			(LTrim Join
 			{
 				"Afrikaans": 1,
-				"Bahasa Indonesia": 2,
-				"Bahasa Melayu": 3,
-				"Català": 4,
-				"Čeština": 5,
-				"Dansk": 6,
-				"Deutsch": 7,
-				"Australia": 8,
-				"Canada": 9,
-				"India": 10,
-				"New Zealand": 11,
-				"South Africa": 12,
-				"English": 13,
-				"United States": 14,
-				"Argentina": 15,
-				"Bolivia": 16,
-				"Chile": 17,
-				"Colombia": 18,
-				"Costa Rica": 19,
-				"Ecuador": 20,
-				"El Salvador": 21,
-				"Español": 22,
-				"Estados Unidos": 23,
-				"Guatemala": 24,
-				"Honduras": 25,
-				"México": 26,
-				"Nicaragua": 27,
-				"Panamá": 28,
-				"Paraguay": 29,
-				"Perú": 30,
-				"Puerto Rico": 31,
-				"República Dominicana": 32,
-				"Uruguay": 33,
-				"Venezuela": 34,
-				"Euskara": 35,
-				"Filipino": 36,
-				"Français": 37,
-				"Galego": 38,
-				"हिन्दी": 39,
-				"Hrvatski": 40,
-				"IsiZulu": 41,
-				"Íslenska": 42,
-				"Italiano": 43,
-				"Svizzera": 44,
-				"Lietuvių": 45,
-				"Magyar": 46,
-				"Nederlands": 47,
-				"Norsk bokmål": 48,
-				"Polski": 49,
-				"Brasil": 50,
-				"Portugal": 51,
-				"Română": 52,
-				"Slovenščina": 53,
-				"Slovenčina": 54,
-				"Suomi": 55,
-				"Svenska": 56,
-				"Tiếng Việt": 57,
-				"ภาษาไทย": 58,
-				"Türkçe": 59,
-				"Ελληνικά": 60,
-				"български": 61,
-				"Русский": 62,
-				"Српски": 63,
-				"Українська": 64,
-				"한국어": 65,
-				"普通话 (中国大陆)": 66,
-				"普通话 (香港)": 67,
-				"中文 (台灣)": 68,
-				"粵語 (香港)": 69,
-				"日本語": 70
+				"Azərbaycan": 2,
+				"Bahasa Indonesia": 3,
+				"Bahasa Melayu": 4,
+				"Basa Jawa": 5,
+				"Basa Sunda": 6,
+				"Català": 7,
+				"Čeština": 8,
+				"Dansk": 9,
+				"Deutsch": 10,
+				"English (Australia)": 11,
+				"English (Canada)": 12,
+				"English (Ghana)": 13,
+				"English (India)": 14,
+				"English (Ireland)": 15,
+				"English (Kenya)": 16,
+				"English (New Zealand)": 17,
+				"English (Nigeria)": 18,
+				"English (Philippines)": 19,
+				"English (South Africa)": 20,
+				"English (Tanzania)": 21,
+				"English (United Kingdom)": 22,
+				"English (United States)": 23,
+				"Español": 24,
+				"Español (Argentina)": 25,
+				"Español (Bolivia)": 26,
+				"Español (Chile)": 27,
+				"Español (Colombia)": 28,
+				"Español (Costa Rica)": 29,
+				"Español (Ecuador)": 30,
+				"Español (El Salvador)": 31,
+				"Español (España)": 32,
+				"Español (Estados Unidos)": 33,
+				"Español (Guatemala)": 34,
+				"Español (Honduras)": 35,
+				"Español (Latinoamérica)": 36,
+				"Español (México)": 37,
+				"Español (Nicaragua)": 38,
+				"Español (Panamá)": 39,
+				"Español (Paraguay)": 40,
+				"Español (Perú)": 41,
+				"Español (Puerto Rico)": 42,
+				"Español (República Dominicana)": 43,
+				"Español (Uruguay)": 44,
+				"Español (Venezuela)": 45,
+				"Euskara": 46,
+				"Filipino": 47,
+				"Français": 48,
+				"Galego": 49,
+				"Hrvatski": 50,
+				"Isizulu": 51,
+				"Íslenska": 52,
+				"Italiano": 53,
+				"Italiano (Italia)": 54,
+				"Italiano (Svizzera)": 55,
+				"Kiswahili (Kenya)": 56,
+				"Kiswahili (Tanzania)": 57,
+				"Latviešu": 58,
+				"Lietuvių": 59,
+				"Magyar": 60,
+				"Nederlands": 61,
+				"Norsk (Bokmål)": 62,
+				"Polski": 63,
+				"Português (Brasil)": 64,
+				"Português (Portugal)": 65,
+				"Română": 66,
+				"Slovenčina": 67,
+				"Slovenščina": 68,
+				"Suomi": 69,
+				"Svenska": 70,
+				"Tiếng Việt": 71,
+				"Türkçe": 72,
+				"Ελληνικά": 73,
+				"Български": 74,
+				"Русский": 75,
+				"Српски": 76,
+				"Українська": 77,
+				"հայերեն": 78,
+				"עברית": 79,
+				"(اردو (بھارت": 80,
+				"(اردو (پاکستان": 81,
+				"العربية": 82,
+				"(العربية (إسرائيل": 83,
+				"(العربية (الأردن": 84,
+				"(العربية (الإمارات": 85,
+				"(العربية (البحرين": 86,
+				"(العربية (الجزائر": 87,
+				"(العربية (السعودية": 88,
+				"(العربية (الكويت": 89,
+				"(العربية (المغرب": 90,
+				"(العربية (تونس": 91,
+				"(العربية (عُمان": 92,
+				"(العربية (فلسطين": 93,
+				"(العربية (قطر": 94,
+				"(العربية (لبنان": 95,
+				"(العربية (مصر": 96,
+				"فارسی": 97,
+				"नेपाली": 98,
+				"मराठी": 99,
+				"हिन्दी": 100,
+				"বাংলা (বাংলাদেশ)": 101,
+				"বাংলা (ভারত)": 102,
+				"ગુજરાતી": 103,
+				"தமிழ் (இந்தியா)": 104,
+				"தமிழ் (இலங்கை)": 105,
+				"தமிழ் (சிங்கப்பூர்)": 106,
+				"தமிழ் (மலேஷியா)": 107,
+				"తెలుగు": 108,
+				"ಕನ್ನಡ": 109,
+				"മലയാളം": 110,
+				"සිංහල": 111,
+				"ไทย": 112,
+				"ລາວ": 113,
+				"ქართულად": 114,
+				"አማርኛ": 115,
+				"ខ្មែរ": 116,
+				"中文（中国）": 117,
+				"中文（台灣）": 118,
+				"中文（香港）": 119,
+				"日本語": 120,
+				"한국어": 121
 			}
 			)
 			for __language, __LID in Dictation.LID, __languages := "", __i := 0
 				__languages .= __language . "|", __i++
 			Dictation.languages := RTrim(__languages, "|"), Dictation.LANGUAGES_MAXINDEX := __i
-
-			Dictation.iteratorPeriod := 400
 
 		}
 
@@ -114,9 +165,9 @@
 		if (ErrorLevel)
 			return !ErrorLevel:=-2
 
-		__titleMatchMode := A_TitleMatchMode, __detectHiddenWindows := A_DetectHiddenWindows, __winDelay := A_WinDelay, __isCritical := A_IsCritical
-		SetTitleMatchMode, RegEx
+		__detectHiddenWindows := A_DetectHiddenWindows, __titleMatchMode := A_TitleMatchMode, __winDelay := A_WinDelay, __isCritical := A_IsCritical
 		DetectHiddenWindows, Off
+		SetTitleMatchMode, RegEx
 		SetWinDelay, -1
 		Critical
 
@@ -124,7 +175,9 @@
 		if (ErrorLevel)
 			return !ErrorLevel:=-1
 
-		WinWait % "^(" . __url . "|Dictation initializing...)$ ahk_exe chrome.exe"
+		WinWait % "^(" . __url . "|Dictation initializing...)$ ahk_exe chrome.exe",, 9
+		if (ErrorLevel)
+			return !ErrorLevel:=1
 		this.AHKID := __AHKID := "ahk_id " . WinExist()
 
 		WinSet, Style, +0x8C00000 ; WS_DISABLED
@@ -136,9 +189,10 @@
 			return !ErrorLevel:=1
 
 		WinWait % ".*100%$" . A_Space . __AHKID
-		WinMove, % __AHKID,, % A_ScreenWidth-1,,, % A_ScreenHeight
-		WinHide
-		DetectHiddenWindows, On
+		if (Dictation.hideChromeInstance) {
+			WinHide
+			DetectHiddenWindows, On
+		} else WinMove, % __AHKID,, % A_ScreenWidth-500,,, % A_ScreenHeight
 
 		WinWait % Dictation.ID . A_Space . __AHKID,, 4
 		if (ErrorLevel)
@@ -146,8 +200,8 @@
 
 		Critical % __isCritical
 		SetWinDelay % __winDelay
-		DetectHiddenWindows % __detectHiddenWindows
 		SetTitleMatchMode % __titleMatchMode
+		DetectHiddenWindows % __detectHiddenWindows
 
 		sleep, 3000
 
@@ -177,8 +231,9 @@
 
 		}
 
-		__detectHiddenWindows := A_DetectHiddenWindows
+		__detectHiddenWindows := A_DetectHiddenWindows, __titleMatchMode := A_TitleMatchMode
 		DetectHiddenWindows, On
+		SetTitleMatchMode, 1
 
 		WinMove, % this.AHKID,,,,, % A_ScreenHeight - __y
 		WinWait % __y . A_Space . this.AHKID,, 2
@@ -188,11 +243,12 @@
 		return !ErrorLevel
 		}
 		DetectHiddenWindows % __detectHiddenWindows
+		SetTitleMatchMode % __titleMatchMode
 
 		if (this.recognizing:=__y) {
 			__f := this.boundIterator := this.updateResult.bind(this)
 			SetTimer, % __f, % Dictation.iteratorPeriod
-		} else this.onResultFunc.bind(this, this.lastInterimResult).call(), this.lastInterimResultElapsedTime := 0, this.lastInterimResult := ""
+		} else this.onResultFunc.call(this, this.lastInterimResult), this.lastInterimResultElapsedTime := 0, this.lastInterimResult := ""
 
 	return true, __y := !__y
 	}
@@ -201,13 +257,10 @@
 	}
 	setRecognitionLanguage(__language) {
 
-		; if not (((__language:=abs(__language)) >= 1) and __language <= Dictation.LANGUAGES_MAXINDEX)
-			; return !ErrorLevel:=3
-
 		if not Dictation.LID.hasKey(__language)
-			return !ErrorLevel:=3
+			return !ErrorLevel:=-1
 
-		__l := Dictation.LID[__language]
+		__l := Dictation.LID[__language] + 1
 
 		__detectHiddenWindows := A_DetectHiddenWindows
 		DetectHiddenWindows, On
@@ -222,7 +275,7 @@
 
 		DetectHiddenWindows % __detectHiddenWindows
 
-	return ErrorLevel:=!((__w1 - __w2 == __l) * 4), this.recognitionLanguage := __language
+	return ErrorLevel:=!((__w1 - __w2 == __l) * 1), this.recognitionLanguage := __language
 	}
 
 	onInterimResult(__callback) {
@@ -231,7 +284,7 @@
 		return !ErrorLevel:=0
 		}
 			this.onInterimResultFunc := this.updateInterimResults
-		return !ErrorLevel:=6
+		return !ErrorLevel:=1
 	}
 	onResult(__callback) {
 		if (__callback.maxParams > 0 or (__callback:=Func(__callback)).maxParams > 0) {
@@ -239,27 +292,16 @@
 		return !ErrorLevel:=0
 		}
 			this.onResultFunc := this.saveToClipboard
-		return !ErrorLevel:=7
+		return !ErrorLevel:=1
 	}
 
-
-		iteratorPeriod {
-			set {
-				if (value < 250)
-			return Dictation._iteratorPeriod := 250
-			return Dictation._iteratorPeriod := value
-			}
-			get {
-			return Dictation._iteratorPeriod
-			}
-		}
 		interimResult {
 			set {
 			if (this.lastInterimResult == value)
 				this.lastInterimResultElapsedTime += 0.5
 			else this.lastInterimResult := value, this.lastInterimResultElapsedTime := 0
 			this.waitForInterimResultTimeRemaining := this.interimResultTimeout - this.lastInterimResultElapsedTime
-			this.onInterimResultFunc.bind(this, this.lastInterimResult).call()
+			this.onInterimResultFunc.call(this, this.lastInterimResult)
 			}
 		}
 		updateResult() {

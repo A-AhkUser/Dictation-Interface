@@ -1,11 +1,11 @@
 ﻿{
 	"manifest_version": 2
-	
+
 	, "name": "Dictation"
 	, "description": ""
 	, "version": "0.1"
-	
-	, "author": "Jérémy Duthois"
+
+	, "author": ""
 	, "homepage_url": "https://github.com/A-AhkUser"
 
 	, "icons": {
@@ -19,7 +19,7 @@
 
 	, "content_scripts": [
 		{
-			"matches": ["https://dictation.io/"]
+			"matches": ["https://dictation.io/speech"]
 			, "js": ["Dictation.injection.js"]
 			, "run_at": "document_end"
 		}

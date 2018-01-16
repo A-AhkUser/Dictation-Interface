@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
 
     var __url = chrome.extension.getURL("popup.html#progress");
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 25, __e);
 
                 window.setTimeout(function () {
-                    window.location.href = "https://dictation.io/";
+                    window.location.href = "https://dictation.io/speech";
                 }, 3500);
 
         }, {"once": true});

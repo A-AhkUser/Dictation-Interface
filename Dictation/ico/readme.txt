@@ -1,2 +1,1 @@
-H Green Icons are part of Multipurpose Alphabet Icons Icon Set, made by Supratim Nayak (HYDRATTZ)
-Website: http://hydrattz.deviantart.com/
+H Green Icons are part of the Multipurpose Alphabet Icons by HYDRATTZ ©2008-2018 HYDRATTZ. Website: https://hydrattz.deviantart.com/art/Multipurpose-Alphabet-Icons-107757957

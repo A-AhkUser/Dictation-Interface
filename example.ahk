@@ -9,6 +9,8 @@ SendMode, Input
 
 #Include %A_ScriptDir%\Class.Dictation.ahk
 
+; Dictation.hideChromeInstance := true ; uncomment to hide the chrome instance
+
 global Sr, Doc
 if not (Sr:=new Dictation()) {
 	MsgBox, 64,, Could not initialize Dictation.
@@ -83,10 +85,10 @@ GuiControl, 1:, progressControl, % (__dictation.waitForInterimResultTimeRemainin
 
 		VarSetCapacity(__str, 110*(__interimResultsOutputArray:=StrSplit(__lastInterimResult, A_Space)).length())
 
-			Loop % __interimResultsOutputArray.length()
-				__str .= "<span class=""s1"">" . __interimResultsOutputArray[ a_index ] . "</span><span class=""s2""> " . a_index . " </span>"
+			for __index, __result in __interimResultsOutputArray
+				__str .= "<span class=""s1"">" . __result . "</span><span class=""s2""> " . __index . " </span>"
 
-				Doc.document.getElementsByClassName("C").0.innerHTML := __str
+				Doc.document.getElementsByClassName("C")[0].innerHTML := __str
 
 	} else {
 		__dictation.recognitionToogleState()
