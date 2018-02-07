@@ -1,6 +1,6 @@
 ﻿## Dictation Interface
-Chrome Version 63.0.3239.132 (64 bits)
-ahk v1.1.27.04
+Chrome Version 64.0.3282.140 (64 bits)
+ahk v1.1.27.07
 
 Usage: check out `/example.ahk`.
 
