@@ -146,62 +146,62 @@
 				"한국어": 121
 			}
 			)
-			for __language, __LID in Dictation.LID, __languages := "", __i := 0
-				__languages .= __language . "|", __i++
-			Dictation.languages := RTrim(__languages, "|"), Dictation.LANGUAGES_MAXINDEX := __i
+			for _language, _LID in Dictation.LID, _languages := "", _i := 0
+				_languages .= _language . "|", _i++
+			Dictation.languages := RTrim(_languages, "|"), Dictation.LANGUAGES_MAXINDEX := _i
 
 		}
 
 	__New() {
 
-		static __init := ""
-		IfNotEqual, __init,, return __init
-		__init := this
+		static _init := ""
+		IfNotEqual, _init,, return _init
+		_init := this
 
 		if not (DllCall("Wininet.dll\InternetGetConnectedState", "Str", "0x40", "Int", 0)) ; INTERNET_CONNECTION_PROXY
 			return !ErrorLevel:=-3
 
-		RegRead, __regKey, HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\App Paths\Chrome.exe
+		RegRead, _regKey, HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\App Paths\Chrome.exe
 		if (ErrorLevel)
 			return !ErrorLevel:=-2
 
-		__detectHiddenWindows := A_DetectHiddenWindows, __titleMatchMode := A_TitleMatchMode, __winDelay := A_WinDelay, __isCritical := A_IsCritical
+		_detectHiddenWindows := A_DetectHiddenWindows, _titleMatchMode := A_TitleMatchMode, _winDelay := A_WinDelay, _isCritical := A_IsCritical
 		DetectHiddenWindows, Off
 		SetTitleMatchMode, RegEx
 		SetWinDelay, -1
 		Critical
 
-		run % """" . __regKey . """ --app=" . (__url:="chrome-extension://" . Dictation.ID . "/popup.html#progress"),, UseErrorLevel
+		run % """" . _regKey . """ --app=" . (_url:="chrome-extension://" . (Dictation.ID:=Trim(Dictation.ID)) . "/popup.html#progress"),, UseErrorLevel
 		if (ErrorLevel)
 			return !ErrorLevel:=-1
 
-		WinWait % "^(" . __url . "|Dictation initializing...)$ ahk_exe chrome.exe",, 9
+		WinWait % "^(" . _url . "|Dictation initializing...)$ ahk_exe chrome.exe",, 9
 		if (ErrorLevel)
 			return !ErrorLevel:=1
-		this.AHKID := __AHKID := "ahk_id " . WinExist()
+		this.AHKID := _AHKID := "ahk_id " . WinExist()
 
 		WinSet, Style, +0x8C00000 ; WS_DISABLED
-		WinGetPos,,, __w
-		__w := (__w = 560) ? 561 : 560
-		WinMove, % __AHKID,, % A_ScreenWidth//2-__w//2, % A_ScreenHeight//2-65//2, __w, 65
-		WinWait % ".*%$ ahk_exe chrome.exe" . A_Space . __AHKID,, 2
+		WinGetPos,,, _w
+		_w := (_w = 560) ? 561 : 560
+		WinMove, % _AHKID,, % A_ScreenWidth // 2 - _w // 2, % A_ScreenHeight // 2 - 65 // 2, _w, 65
+		WinWait % ".*%$ " . _AHKID,, 2
 		if (ErrorLevel)
 			return !ErrorLevel:=1
 
-		WinWait % ".*100%$" . A_Space . __AHKID
+		WinWait % ".*100%$ " . _AHKID
 		if (Dictation.hideChromeInstance) {
 			WinHide
 			DetectHiddenWindows, On
-		} else WinMove, % __AHKID,, % A_ScreenWidth-500,,, % A_ScreenHeight
+		} else WinMove, % _AHKID,, % A_ScreenWidth - 500, 0,, % A_ScreenHeight
 
-		WinWait % Dictation.ID . A_Space . __AHKID,, 4
+		WinWait % Dictation.ID . A_Space . _AHKID,, 4
 		if (ErrorLevel)
 			return !ErrorLevel:=2
 
-		Critical % __isCritical
-		SetWinDelay % __winDelay
-		SetTitleMatchMode % __titleMatchMode
-		DetectHiddenWindows % __detectHiddenWindows
+		Critical % _isCritical
+		SetWinDelay % _winDelay
+		SetTitleMatchMode % _titleMatchMode
+		DetectHiddenWindows % _detectHiddenWindows
 
 		sleep, 3000
 
@@ -209,86 +209,86 @@
 	}
 
 	__Delete() {
-	__detectHiddenWindows := A_DetectHiddenWindows
+	_detectHiddenWindows := A_DetectHiddenWindows
 	DetectHiddenWindows, On
 		if (WinExist(this.AHKID))
 			WinClose
-	DetectHiddenWindows % __detectHiddenWindows
+	DetectHiddenWindows % _detectHiddenWindows
 	}
 
 	recognitionToogleState() {
 
-	static __x := 0, __y := 1
+	static _x := 0, _y := 1
 
-		IfEqual, __x, %__y%, return
-		__x := __y
+		IfEqual, _x, %_y%, return
+		_x := _y
 
-		if (__f:=this.boundIterator) {
+		if (_f:=this.boundIterator) {
 
-			SetTimer, % __f, off
-			SetTimer, % __f, delete
+			SetTimer, % _f, off
+			SetTimer, % _f, delete
 			this.boundIterator := ""
 
 		}
 
-		__detectHiddenWindows := A_DetectHiddenWindows, __titleMatchMode := A_TitleMatchMode
+		_detectHiddenWindows := A_DetectHiddenWindows, _titleMatchMode := A_TitleMatchMode
 		DetectHiddenWindows, On
 		SetTitleMatchMode, 1
 
-		WinMove, % this.AHKID,,,,, % A_ScreenHeight - __y
-		WinWait % __y . A_Space . this.AHKID,, 2
+		WinMove, % this.AHKID,,,,, % A_ScreenHeight - _y
+		WinWait % _y . A_Space . this.AHKID,, 2
 		if (ErrorLevel) {
 			if (WinExist(this.AHKID))
 				WinClose
 		return !ErrorLevel
 		}
-		DetectHiddenWindows % __detectHiddenWindows
-		SetTitleMatchMode % __titleMatchMode
+		DetectHiddenWindows % _detectHiddenWindows
+		SetTitleMatchMode % _titleMatchMode
 
-		if (this.recognizing:=__y) {
-			__f := this.boundIterator := this.updateResult.bind(this)
-			SetTimer, % __f, % Dictation.iteratorPeriod
+		if (this.recognizing:=_y) {
+			_f := this.boundIterator := this.updateResult.bind(this)
+			SetTimer, % _f, % Dictation.iteratorPeriod
 		} else this.onResultFunc.call(this, this.lastInterimResult), this.lastInterimResultElapsedTime := 0, this.lastInterimResult := ""
 
-	return true, __y := !__y
+	return true, _y := !_y
 	}
 	recognitionState() {
 	return this.recognizing
 	}
-	setRecognitionLanguage(__language) {
+	setRecognitionLanguage(_language) {
 
-		if not Dictation.LID.hasKey(__language)
+		if not Dictation.LID.hasKey(_language)
 			return !ErrorLevel:=-1
 
-		__l := Dictation.LID[__language] + 1
+		_l := Dictation.LID[_language] + 1
 
-		__detectHiddenWindows := A_DetectHiddenWindows
+		_detectHiddenWindows := A_DetectHiddenWindows
 		DetectHiddenWindows, On
 
-		WinGetPos,,, __w1,, % "ahk_id " . WinExist(this.AHKID)
+		WinGetPos,,, _w1,, % "ahk_id " . WinExist(this.AHKID)
 
-			WinMove,,,,, % __w1 - (__l)
-			WinGetPos,,, __w2
+			WinMove,,,,, % _w1 - (_l)
+			WinGetPos,,, _w2
 				sleep, 100
-			WinMove,,,,, % __w1
-			WinGetPos,,, __w1
+			WinMove,,,,, % _w1
+			WinGetPos,,, _w1
 
-		DetectHiddenWindows % __detectHiddenWindows
+		DetectHiddenWindows % _detectHiddenWindows
 
-	return ErrorLevel:=!((__w1 - __w2 == __l) * 1), this.recognitionLanguage := __language
+	return ErrorLevel:=!((_w1 - _w2 == _l) * 1), this.recognitionLanguage := _language
 	}
 
-	onInterimResult(__callback) {
-		if (__callback.maxParams > 0 or (__callback:=Func(__callback)).maxParams > 0) {
-			this.onInterimResultFunc := __callback
+	onInterimResult(_callback) {
+		if (_callback.maxParams > 0 or (_callback:=Func(_callback)).maxParams > 0) {
+			this.onInterimResultFunc := _callback
 		return !ErrorLevel:=0
 		}
 			this.onInterimResultFunc := this.updateInterimResults
 		return !ErrorLevel:=1
 	}
-	onResult(__callback) {
-		if (__callback.maxParams > 0 or (__callback:=Func(__callback)).maxParams > 0) {
-			this.onResultFunc := __callback
+	onResult(_callback) {
+		if (_callback.maxParams > 0 or (_callback:=Func(_callback)).maxParams > 0) {
+			this.onResultFunc := _callback
 		return !ErrorLevel:=0
 		}
 			this.onResultFunc := this.saveToClipboard
@@ -305,11 +305,11 @@
 			}
 		}
 		updateResult() {
-		__detectHiddenWindows := A_DetectHiddenWindows
+		_detectHiddenWindows := A_DetectHiddenWindows
 		DetectHiddenWindows, On
-			WinGetTitle, __winTitle, % this.AHKID
-			this.interimResult := InStr(__winTitle, Dictation.url) ? "" : __winTitle
-		DetectHiddenWindows % __detectHiddenWindows
+			WinGetTitle, _winTitle, % this.AHKID
+			this.interimResult := InStr(_winTitle, Dictation.url) ? "" : _winTitle
+		DetectHiddenWindows % _detectHiddenWindows
 		}
 
 		updateInterimResults() {
@@ -317,8 +317,8 @@
 			TrayTip,, % this.lastInterimResult,, 0x1
 		} else this.recognitionToogleState()
 		}
-		saveToClipboard(__result) {
-		clipboard := __result
+		saveToClipboard(_result) {
+		clipboard := _result
 		}
 
 }
