@@ -3,8 +3,7 @@
 #KeyHistory 0
 SetWorkingDir % A_ScriptDir
 SendMode, Input
-; #Warn
-#Warn, ClassOverwrite, Off ; 1.1.27.00+
+#Warn
 
 
 #Include %A_ScriptDir%\Class.Dictation.ahk
@@ -12,6 +11,10 @@ SendMode, Input
 ; Dictation.hideChromeInstance := true ; uncomment to hide the chrome instance
 
 global Sr, Doc
+if not (Dictation.ID) {
+	MsgBox, 64,, Please copy the ID of the extension and paste it on the top of Class.Dictation.ahk.
+ExitApp
+}
 if not (Sr:=new Dictation()) {
 	MsgBox, 64,, Could not initialize Dictation.
 ExitApp
@@ -77,26 +80,26 @@ Sr := ""
 ExitApp
 
 
-updateInterimResults(__dictation, __lastInterimResult) {
+updateInterimResults(_dictation, _lastInterimResult) {
 
-GuiControl, 1:, progressControl, % (__dictation.waitForInterimResultTimeRemaining*100)//__dictation.interimResultTimeout
+GuiControl, 1:, progressControl, % (_dictation.waitForInterimResultTimeRemaining*100)//_dictation.interimResultTimeout
 
-	if (__dictation.waitForInterimResultTimeRemaining) {
+	if (_dictation.waitForInterimResultTimeRemaining) {
 
-		VarSetCapacity(__str, 110*(__interimResultsOutputArray:=StrSplit(__lastInterimResult, A_Space)).length())
+		VarSetCapacity(_str, 110*(_interimResultsOutputArray:=StrSplit(_lastInterimResult, A_Space)).length())
 
-			for __index, __result in __interimResultsOutputArray
-				__str .= "<span class=""s1"">" . __result . "</span><span class=""s2""> " . __index . " </span>"
+			for _index, _result in _interimResultsOutputArray
+				_str .= "<span class=""s1"">" . _result . "</span><span class=""s2""> " . _index . " </span>"
 
-				Doc.document.getElementsByClassName("C")[0].innerHTML := __str
+				Doc.document.getElementsByClassName("C")[0].innerHTML := _str
 
 	} else {
-		__dictation.recognitionToogleState()
+		_dictation.recognitionToogleState()
 		GuiControl, 1:Enable, dropDownListControl
 	}
 
 }
-saveToClipboard(__dictation, __result) {
-	clipboard := __result
+saveToClipboard(_dictation, _result) {
+	clipboard := _result
 	TrayTip, % A_ScriptName, Result has been copied to clipboard.
 }
