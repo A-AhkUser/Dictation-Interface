@@ -1,26 +1,22 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-    var __url = chrome.extension.getURL("popup.html#progress");
+	var _url = chrome.extension.getURL("popup.html#initialize");
 
-    if (window.location.href === __url) {
+    if (window.location.href == _url) {
 
-        document.title = "Dictation  initializing...";
+        document.title = _url, window.addEventListener("resize", function () {
 
-        window.addEventListener("resize", function () {
+            var _e = document.createElement("progress");
+            _e.value = -1, _e.max = 100, document.body.appendChild(_e);
 
-            var __e = document.createElement("progress");
-            __e.value = 0, __e.max = 100, document.body.appendChild(__e);
-
-            document.title = "Dictation loading... " + __e.value + "%";
-
-                window.setInterval(function (__progressControl) {
-                    if (__progressControl.value == 100) clearInterval();
-                    else __progressControl.value = __progressControl.value + 1, document.title = "Dictation loading... " + __e.value + "%";
-                }, 25, __e);
+                window.setInterval(function (_progressControl) {
+                    if (_progressControl.value == 100) clearInterval();
+                    else _progressControl.value = _progressControl.value + 1, document.title = "Dictation loading... " + _e.value + "%";
+                }, 25, _e);
 
                 window.setTimeout(function () {
                     window.location.href = "https://dictation.io/speech";
-                }, 3500);
+                }, (25 + 10) * 100);
 
         }, {"once": true});
 

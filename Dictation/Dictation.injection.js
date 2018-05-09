@@ -1,58 +1,63 @@
-﻿var A_LastWidth = window.outerWidth, A_LastHeight = window.outerHeight;
+﻿var wrapper;
+(wrapper = function () {
 
-(Dictation = new function() {
-
-	document.getElementById("lang").setAttribute("onclick", "dictation('lang');javascript:updateLang(this);return false;");
+	var _w = window.outerWidth, _h = window.outerHeight;
+	/*
+	var _e;
+	_e = document.getElementsByClassName("btn-mic btn btn--primary-1")[0];
+	var _start = _e.click.bind(_e);
+	_e = document.getElementsByClassName("btn-mic btn bg--pinterest")[0];
+	var _stop = _e.click.bind(_e);
+	*/
+	document.getElementById("lang").setAttribute("onclick", "dictation('lang');");
 
 	return {
 
 		Init: function() {
 			window.addEventListener("resize", function() {
-			var __width = window.outerWidth - A_LastWidth;
-				Dictation.winResizeEventMonitor(__width, !__width);
+			var _width = window.outerWidth - _w;
+				wrapper._winResizeEventMonitor(_width, !_width);
 			});
 		},
-		recognitionState: 0,
-		set recognitionLanguage(__LID) {
-
-			if (__LID < 1) return;
-			console.info((document.getElementById("lang")[document.getElementById("lang").selectedIndex=__LID - 1]).value);
-			document.getElementById("lang").click();
-
+		set recognitionLanguage(_LID) {
+			if (_LID < 1) return;
+				var _e = document.getElementById("lang");
+				_e.selectedIndex = _LID - 1, _e.click();
 		},
+		recognitionState: 0,
 		start: function() {
 
-		this.recognitionState = 1, document.getElementsByClassName("ql-editor")[0].innerText = "", document.getElementsByClassName("btn-mic btn btn--primary-1")[0].click(), document.title = this.recognitionState;
+		var _e = document.getElementsByClassName("ql-editor")[0];
+		_e.innerText = "";
 
-		console.log(arguments.callee.name);
+		this.recognitionState = 1;
+		document.getElementsByClassName("btn-mic btn btn--primary-1")[0].click();
+		document.title = this.recognitionState;
 
-			this.titleUpdater = window.setInterval(function() {
-				document.title = document.getElementsByClassName("ql-editor")[0].innerText;
-			}, 700);
+			this._titleUpdater = window.setInterval(function(_e) {
+				document.title = _e.innerText;
+			}, 700, _e);
 
 		},
 		stop: function() {
 
-		this.recognitionState = -1, document.getElementsByClassName("btn-mic btn bg--pinterest")[0].click(), clearInterval(this.titleUpdater), document.title = this.recognitionState;
+		this.recognitionState = -1;
+		document.getElementsByClassName("btn-mic btn bg--pinterest")[0].click();
+		document.title = this.recognitionState;
 
-		console.log(arguments.callee.name);
-
-			window.setTimeout(function(__Dictation) {
-				document.title = (__Dictation.recognitionState=0);
+			clearInterval(this._titleUpdater), window.setTimeout(function(_wrapper) {
+				document.title = (_wrapper.recognitionState=0);
 			}, 700, this);
 
 		},
-		setRecognitionLanguage: function(__language) {
-		if (this.recognitionState) {
-			console.warn(arguments[0]);
-		return;
-		}
-			this.recognitionLanguage = __language;
+		setRecognitionLanguage: function(_language) {
+		if (this.recognitionState) return;
+			this.recognitionLanguage = _language;
 		},
 
-			winResizeEventMonitor: function(__width, __height) {
+			_winResizeEventMonitor: function(_width, _height) {
 
-				if (__height)
+				if (_height)
 				{
 					switch(this.recognitionState) {
 						case 1:
@@ -64,18 +69,18 @@
 						case -1:
 						break;
 					}
-					A_LastHeight = window.outerHeight;
+					_h = window.outerHeight;
 
 				}
-				else if (__width)
+				else if (_width)
 				{
-					this.setRecognitionLanguage(__width);
-				A_LastWidth = window.outerWidth;
+					this.setRecognitionLanguage(_width);
+				_w = window.outerWidth;
 				}
 
 			}
 
 	}
 
-}).Init();
+}()).Init();
 console.log(document.title=chrome.runtime.id);
