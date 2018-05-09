@@ -1,5 +1,5 @@
 ﻿#NoEnv
-#SingleInstance force
+#SingleInstance ignore
 SetWorkingDir % A_ScriptDir
 SendMode, Input
 CoordMode, ToolTip, Screen
