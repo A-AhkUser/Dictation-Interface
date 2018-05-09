@@ -1,45 +1,47 @@
 ﻿#NoEnv
-#SingleInstance ignore
-#KeyHistory 0
+#SingleInstance force
 SetWorkingDir % A_ScriptDir
 SendMode, Input
+CoordMode, ToolTip, Screen
 #Warn
+; Windows 8.1 64 bit - Autohotkey v1.1.28.00 32-bit Unicode
+; Chrome v66.0.3359.139 (64 bits)
 
 
-#Include %A_ScriptDir%\Class.Dictation.ahk
+#Include %A_ScriptDir%\Dictation.ahk
 
 ; Dictation.hideChromeInstance := true ; uncomment to hide the chrome instance
 
 global Sr, Doc
 if not (Dictation.ID) {
-	MsgBox, 64,, Please copy the ID of the extension and paste it on the top of Class.Dictation.ahk.
+	MsgBox, 64,, Please copy the 'ID' of the extension and paste it into the appropriate location on the top of 'Dictation.ahk'.
 ExitApp
 }
 if not (Sr:=new Dictation()) {
-	MsgBox, 64,, Could not initialize Dictation.
+	MsgBox, 64,, Could not initialize Dictation.`r`nThe program will exit.
 ExitApp
 } else Sr.onInterimResult("updateInterimResults"), Sr.onResult("saveToClipboard"), Sr.setRecognitionLanguage("Français")
 
-Gui, 1:Margin, 10, 10
-Gui, 1:Add, DropDownList, % "vdropDownListControl Section xm ym w150 R10 Sort gsetRecognitionLanguage", % Sr.languages
+Gui, 1:Margin, 10, 20
+Gui, 1:Add, DropDownList, vdropDownListControl Section xm ym w150 R10 Sort gsetRecognitionLanguage, % Sr.languages
 GuiControl, 1:ChooseString, dropDownListControl, % Sr.recognitionLanguage
 Gui, 1:Add, Button, vbuttonControl ys w160 h20 grecognitionToogleState, Start/stop &recognition
-Gui, 1:Add, ActiveX, vDoc xm y39 w710 h100, about:<!DOCTYPE html><meta http-equiv="X-UA-Compatible" content="IE=edge">
+Gui, 1:Add, ActiveX, vDoc xm w710 h100, about:<!DOCTYPE html><meta http-equiv="X-UA-Compatible" content="IE=edge">
 Doc.document.Open()
 html =
 (
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="utf-8" />
-<title>HTMLFile</title>
-<style>
-.s2 {
-vertical-align: sub;
-font-size: 9px;
-color: #666;
-}
-</style>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="utf-8" />
+	<title>HTMLFile</title>
+	<style>
+	.s2 {
+		vertical-align: sub;
+		font-size: 9px;
+		color: #666666;
+	}
+	</style>
 </head>
 <body><div class="C" style="padding: 15px;"></div></body>
 </html>
@@ -74,7 +76,6 @@ GuiControl, 1:Enable1, % A_GuiControl
 return
 
 GuiClose:
-ExitApp
 handleExit:
 Sr := ""
 ExitApp
@@ -82,11 +83,12 @@ ExitApp
 
 updateInterimResults(_dictation, _lastInterimResult) {
 
-GuiControl, 1:, progressControl, % (_dictation.waitForInterimResultTimeRemaining*100)//_dictation.interimResultTimeout
+_t := _dictation.waitForInterimResultTimeRemaining
+GuiControl, 1:, progressControl, % (_t * 100) // _dictation.interimResultTimeout
 
-	if (_dictation.waitForInterimResultTimeRemaining) {
+	if (_t) {
 
-		VarSetCapacity(_str, 110*(_interimResultsOutputArray:=StrSplit(_lastInterimResult, A_Space)).length())
+		VarSetCapacity(_str, 110 * (_interimResultsOutputArray:=StrSplit(_lastInterimResult, A_Space)).length())
 
 			for _index, _result in _interimResultsOutputArray
 				_str .= "<span class=""s1"">" . _result . "</span><span class=""s2""> " . _index . " </span>"
