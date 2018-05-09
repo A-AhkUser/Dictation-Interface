@@ -5,12 +5,12 @@
 	; ==========================================
 
 		, url := "https://dictation.io/speech"
-		, iteratorPeriod := 400
-		, hideChromeInstance := false
 
-		recognitionLanguage := ""
+		hideChromeInstance := false
+		, recognitionLanguage := ""
 		, recognizing := false
-		, interimResultTimeout := 7
+		, iteratorPeriod := 400
+		, interimResultTimeout := 14
 		, lastInterimResultElapsedTime := 0
 		, lastInterimResult := ""
 		, onInterimResultFunc := this.updateInterimResults
@@ -18,7 +18,7 @@
 
 		Init() {
 
-		static __ := Dictation.Init()
+		static _ := Dictation.Init()
 
 			Dictation.LID :=
 			(LTrim Join
@@ -147,8 +147,8 @@
 			}
 			)
 			for _language, _LID in Dictation.LID, _languages := "", _i := 0
-				_languages .= _language . "|", _i++
-			Dictation.languages := RTrim(_languages, "|"), Dictation.LANGUAGES_MAXINDEX := _i
+				_languages .= _language . "|"
+			Dictation.languages := RTrim(_languages, "|")
 
 		}
 
@@ -165,40 +165,39 @@
 		if (ErrorLevel)
 			return !ErrorLevel:=-2
 
-		_detectHiddenWindows := A_DetectHiddenWindows, _titleMatchMode := A_TitleMatchMode, _winDelay := A_WinDelay, _isCritical := A_IsCritical
+		_detectHiddenWindows := A_DetectHiddenWindows, _titleMatchMode := A_TitleMatchMode, _winDelay := A_WinDelay
 		DetectHiddenWindows, Off
 		SetTitleMatchMode, RegEx
 		SetWinDelay, -1
-		Critical
 
-		run % """" . _regKey . """ --app=" . (_url:="chrome-extension://" . (Dictation.ID:=Trim(Dictation.ID)) . "/popup.html#progress"),, UseErrorLevel
+		run % """" . _regKey . """ --app=" . (_url:="chrome-extension://" . (Dictation.ID:=Trim(Dictation.ID)) . "/popup.html#initialize"),, UseErrorLevel
 		if (ErrorLevel)
 			return !ErrorLevel:=-1
-
-		WinWait % "^(" . _url . "|Dictation initializing...)$ ahk_exe chrome.exe",, 9
+		WinWait % _url . A_Space . "ahk_exe chrome.exe"
 		if (ErrorLevel)
 			return !ErrorLevel:=1
-		this.AHKID := _AHKID := "ahk_id " . WinExist()
 
-		WinSet, Style, +0x8C00000 ; WS_DISABLED
+		WinSet, Style, +0x8C00000, % this.AHKID := _AHKID := "ahk_id " . WinExist() ; WS_DISABLED
 		WinGetPos,,, _w
 		_w := (_w = 560) ? 561 : 560
 		WinMove, % _AHKID,, % A_ScreenWidth // 2 - _w // 2, % A_ScreenHeight // 2 - 65 // 2, _w, 65
-		WinWait % ".*%$ " . _AHKID,, 2
+
+		WinWait % "%" . A_Space . _AHKID,, 2
+		if (ErrorLevel)
+			return !ErrorLevel:=1
+		WinWait % "100%" . A_Space . _AHKID,, 5
 		if (ErrorLevel)
 			return !ErrorLevel:=1
 
-		WinWait % ".*100%$ " . _AHKID
 		if (Dictation.hideChromeInstance) {
 			WinHide
 			DetectHiddenWindows, On
-		} else WinMove, % _AHKID,, % A_ScreenWidth - 500, 0,, % A_ScreenHeight
+		} else WinMove, % _AHKID,, % A_ScreenWidth - _w, 0,, % A_ScreenHeight
 
 		WinWait % Dictation.ID . A_Space . _AHKID,, 4
 		if (ErrorLevel)
 			return !ErrorLevel:=2
 
-		Critical % _isCritical
 		SetWinDelay % _winDelay
 		SetTitleMatchMode % _titleMatchMode
 		DetectHiddenWindows % _detectHiddenWindows
@@ -242,8 +241,8 @@
 				WinClose
 		return !ErrorLevel
 		}
-		DetectHiddenWindows % _detectHiddenWindows
 		SetTitleMatchMode % _titleMatchMode
+		DetectHiddenWindows % _detectHiddenWindows
 
 		if (this.recognizing:=_y) {
 			_f := this.boundIterator := this.updateResult.bind(this)
@@ -265,8 +264,10 @@
 		_detectHiddenWindows := A_DetectHiddenWindows
 		DetectHiddenWindows, On
 
-		WinGetPos,,, _w1,, % "ahk_id " . WinExist(this.AHKID)
+		if not (WinExist(this.AHKID))
+			return !ErrorLevel:=-1
 
+			WinGetPos,,, _w1
 			WinMove,,,,, % _w1 - (_l)
 			WinGetPos,,, _w2
 				sleep, 100
@@ -275,7 +276,7 @@
 
 		DetectHiddenWindows % _detectHiddenWindows
 
-	return ErrorLevel:=!((_w1 - _w2 == _l) * 1), this.recognitionLanguage := _language
+	return !ErrorLevel:=0, this.recognitionLanguage := _language
 	}
 
 	onInterimResult(_callback) {
