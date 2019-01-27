@@ -2,14 +2,6 @@
 (wrapper = function () {
 
 	var _w = window.outerWidth, _h = window.outerHeight;
-	/*
-	var _e;
-	_e = document.getElementsByClassName("btn-mic btn btn--primary-1")[0];
-	var _start = _e.click.bind(_e);
-	_e = document.getElementsByClassName("btn-mic btn bg--pinterest")[0];
-	var _stop = _e.click.bind(_e);
-	*/
-	document.getElementById("lang").setAttribute("onclick", "dictation('lang');");
 
 	return {
 
@@ -22,7 +14,9 @@
 		set recognitionLanguage(_LID) {
 			if (_LID < 1) return;
 				var _e = document.getElementById("lang");
-				_e.selectedIndex = _LID - 1, _e.click();
+				_e.selectedIndex = _LID - 1;
+				var _event = document.createEvent("HTMLEvents");
+				_event.initEvent("change", false, true), _e.dispatchEvent(_event);
 		},
 		recognitionState: 0,
 		start: function() {
